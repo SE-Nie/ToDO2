@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" placeholder="create new task" />
+    <button>add</button>
+    <div id="ListOne"></div>
+    <script>
+        // Draw list in the screen
+        // add items to the List with a text input
+        // add a delete button
+
+        class Task {
+            constructor(content, status) {
+                this.content = content;
+                this.status = status;
+                this.createdAt = Date.now();
+            }
+        }
+
+        class List {
+            constructor(name, selector) {
+                this.name = name;
+                this.selector = selector;
+                this.target = document.querySelector(this.selector);
+                this.items = [];
+            }
+            addItem(value) {
+                this.items.push(value);
+                this.render();
+            }
+            // show it as HTML:
+            render() {
+                this.target.innerHTML = "";
+                this.items.forEach((item, i) => {
+                    const li = document.createElement("li");
+                    li.classList.add(item.status);
+                    // console.log(item);
+                    li.addEventListener('click', () => {
+                        // alert(item.content);
+                        this.items.splice(i,1)
+                        this.render();
+                        console.log(this.items);
+                    });
+                    li.innerText = item.content;
+                    this.target.appendChild(li);
+                })   
+            }
+        }
+        const firstToDoList = new List("test", "#ListOne");
+        
+        const input = document.querySelector("input")
+        const button = document.querySelector("button")
+        button.addEventListener("click", ()=>{
+            if(!!input.value) {
+                firstToDoList.addItem(new Task(input.value, false));
+                input.value = ""
+            }
+        })
+        firstToDoList.addItem(new Task("Kaufe Milch", false));
+        firstToDoList.addItem(new Task("spüle ab", true));
+        firstToDoList.addItem(new Task("Trinken", false));
+        // console.log(firstToDoList);
+        
+    </script>
+</body>
+</html>
