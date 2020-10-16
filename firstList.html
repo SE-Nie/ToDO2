@@ -4,12 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Simple ToDo List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./firstList.css" />
+    <style>
+        ul {
+            list-style: none;
+        }
+    
+    </style>
 </head>
 <body>
+    <div id="page">
+        <h1 id="header">List</h1>
+        <h2>Get this items done<span id="counter"></span></h2>
+
+    <!--
     <input type="text" placeholder="create new task" />
-    <button>add</button>
-    <div id="ListOne"></div>
+    <button>add</button>-->
+    <ul id="ListOne"></ul>
+
+    <div id="newItemForm">
+      <input type="text"  placeholder="New item" />
+      <button>add</button>
+    </div>
+  </div>
+
     <script>
         // Draw list in the screen
         // add items to the List with a text input
@@ -22,7 +42,8 @@
                 this.createdAt = Date.now();
             }
         }
-
+        let total = 5;
+        document.querySelector("#counter").innerHTML = total;
         class List {
             constructor(name, selector) {
                 this.name = name;
@@ -37,6 +58,7 @@
             // show it as HTML:
             render() {
                 this.target.innerHTML = "";
+                
                 this.items.forEach((item, i) => {
                     const li = document.createElement("li");
                     li.classList.add(item.status);
@@ -45,11 +67,18 @@
                         // alert(item.content);
                         this.items.splice(i,1)
                         this.render();
-                        console.log(this.items);
+                        // console.log(this.items);
+                        // document.querySelector("#counter").innerHTML = i;
+                        total--;
+                        console.log(total);
+                        document.querySelector("#counter").innerHTML = total;
                     });
                     li.innerText = item.content;
+                    
                     this.target.appendChild(li);
-                })   
+                    // total++;
+                }) 
+                
             }
         }
         const firstToDoList = new List("test", "#ListOne");
@@ -59,12 +88,21 @@
         button.addEventListener("click", ()=>{
             if(!!input.value) {
                 firstToDoList.addItem(new Task(input.value, false));
+                total++;
+                
                 input.value = ""
             }
+            console.log(total);
+            document.querySelector("#counter").innerHTML = total;
         })
-        firstToDoList.addItem(new Task("Kaufe Milch", false));
-        firstToDoList.addItem(new Task("spüle ab", true));
-        firstToDoList.addItem(new Task("Trinken", false));
+        
+        firstToDoList.addItem(new Task("wash the car", true));
+        firstToDoList.addItem(new Task("get rid of git", true));
+        firstToDoList.addItem(new Task("buy flowers", false));
+        firstToDoList.addItem(new Task("bake a cake", false));
+        firstToDoList.addItem(new Task("remember the milk", false));
+        
+        
         // console.log(firstToDoList);
         
     </script>
